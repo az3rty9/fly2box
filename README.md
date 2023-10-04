@@ -2,7 +2,16 @@
 
 ## Overview
 
-Fly2Box uses Flask to create a web application that allows you to request a new WAN IP address by changing network bands from 4G FDD to 4G TDD and vice versa. It provides a simple command-line interface (CLI) for controlling the web application.
+**Fly2Box** is a Flask web application that allows you to request a new WAN IP address from a **HUAWEI 4G Router API** by changing network bands from 4G FDD to 4G TDD and vice versa. It also provides a simple command-line interface (CLI) for controlling the web application.
+
+#### List of HUAWEI 4G Router Models:
+##### Device name:
+* B612-233
+* B618s-22d
+* B715s-23c
+* B525s-65a
+* B525s-23a
+
 
 ## Requirements
 
@@ -18,12 +27,13 @@ You can install these dependencies using pip:
 pip install colorama requests flask argparse
 ```
 
-## Install
+## Installation
 
-Download this repo or use Git,...
+To install Fly2Box, simply clone the repository by runing the following command:
 ```bash
 git clone https://github.com/az3rty9/fly2box/
 ```
+or Download this repository.
 
 ## Usage
 
