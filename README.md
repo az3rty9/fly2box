@@ -18,8 +18,18 @@ You can install these dependencies using pip:
 pip install colorama requests flask argparse
 ```
 
+## Install
+
+Download this repo or use Git,...
+```bash
+git clone https://github.com/az3rty9/fly2box/
+```
+
 ## Usage
 
+```bash
+cd fly2box
+```
 ### Command-Line Interface (CLI)
 To start the script with the CLI, use the following command:
 ```bash
@@ -29,7 +39,6 @@ This will launch the script in CLI mode, where you can control the WAN IP changi
 
 ### Web Interface
 To start the script with the web interface, use the following command:
-
 ```bash
 python script.py -web
 ```
