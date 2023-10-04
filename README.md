@@ -2,7 +2,7 @@
 
 ## Overview
 
-This Python script uses Flask to create a web application that allows you to request a new WAN IP address by changing network bands from 4G FDD to 4G TDD and vice versa. It provides a simple command-line interface (CLI) for controlling the web application.
+Fly2Box uses Flask to create a web application that allows you to request a new WAN IP address by changing network bands from 4G FDD to 4G TDD and vice versa. It provides a simple command-line interface (CLI) for controlling the web application.
 
 ## Requirements
 
