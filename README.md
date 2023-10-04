@@ -18,16 +18,16 @@ You can install these dependencies using pip:
 pip install colorama requests flask argparse
 ```
 
-# Usage
+## Usage
 
-# Command-Line Interface (CLI)
+### Command-Line Interface (CLI)
 To start the script with the CLI, use the following command:
 ```bash
 python script.py -cli -u admin -p pa$$w0rd (optionally: -g 192.168.1.1)
 ```
 This will launch the script in CLI mode, where you can control the WAN IP changing process.
 
-# Web Interface
+### Web Interface
 To start the script with the web interface, use the following command:
 
 ```bash
@@ -35,16 +35,17 @@ python script.py -web
 ```
 This will start a Flask web application that allows you to interact with the WAN IP changer through a web browser.
 
-# Usage Instructions
+## Usage Instructions
 Run the script with either the CLI or web interface mode as shown above.
 Access the web interface by opening your web browser and navigating to ```http://localhost:5000``` (or another specified address).
 Follow the on-screen instructions to change the network band and request a new WAN IP address.
 
 
-# Screenshots
-[Add screenshots of your web interface here to visually demonstrate how it works.]
+## Screenshots
+!["login"](./screenshot/login.png) 
+!["home"](./screenshot/home.png)
+!["cli"](./screenshot/cli.png)
 
-
-# License
+## License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
