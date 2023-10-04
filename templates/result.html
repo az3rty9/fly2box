@@ -1,0 +1,385 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<script>
+		
+		function request(url, callback) {
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", url, true);
+
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState === 4) {
+					if (xhr.status === 200) {
+						callback(xhr.responseText);
+					} else {
+						callback(null); 
+					}
+				}
+			};
+
+			xhr.send();
+		}
+
+		function change_ipaddress() {
+			var ipaddressElement = document.getElementById("ipaddress");
+			var networkElement = document.getElementById("network");
+			var url = "/retrieve";
+			request(url, function (json_data) {
+				if (json_data) {
+					var responseData = JSON.parse(json_data);
+					var ipAddress = responseData['ipaddress'];
+					var network = responseData['network'];
+
+					console.log(ipAddress);
+					ipaddressElement.innerHTML = ipAddress;
+					ipaddressElement.style.display = 'block';
+
+					networkElement.innerHTML = network;
+					networkElement.style.display = 'block';
+				} else {
+					// Handle error
+					console.error('Failed to retrieve data.');
+				}
+			});
+		}
+
+
+		function fetch_status_info() {
+			var user_count_Element = document.getElementById("user_count");
+			var total_this_month_Element = document.getElementById("total_this_month");
+			var total_Element = document.getElementById("total");
+			
+			var url = "/update_state";
+			request(url, function (json_data) {
+				if (json_data) {
+					console.log(json_data);
+					var redirectURL = JSON.parse(json_data).location;			
+					
+					if(redirectURL){						
+						window.location.href = redirectURL;
+					}else{
+				
+						var responseData = JSON.parse(json_data);
+						var user_count = responseData['current_wifi_user'];
+						var total_this_month = responseData["total_this_month"];
+						var total = responseData["total"];
+						
+						console.log(user_count);
+						user_count_Element.innerHTML = user_count;
+						user_count_Element.style.display = 'block';
+						
+						total_this_month_Element.innerHTML = total_this_month;
+						total_this_month_Element.style.display = 'block';
+						
+						total_Element.innerHTML = total;
+						total_Element.style.display = 'block';
+					}
+				} else {
+							// Handle error
+					console.error('Failed to retrieve data.');
+				}
+					
+			});   
+                        
+       }
+		
+	
+        setInterval(fetch_status_info, 60000);
+    </script>
+	
+    <style>
+
+		.header {
+				height: 25px;
+				background-color: #222;
+				color: white;
+				padding: 10px;
+				display: flex;
+				align-items: center;
+			}
+
+			/* Text Styles 
+			background-size: 40px 40px;
+			*/
+		
+		.header_text {
+				flex: 1;
+				font-size: 20px;
+				width: 370px;
+				height: 25px;
+				-webkit-font-smoothing: antialiased;
+				font-weight: bold;
+				
+				text-align: left;
+			}
+
+			
+		.header_image {
+				max-width: 100%; 
+				display: block; 
+				margin: 0 auto;
+				padding: 20px;
+			}
+			
+		body {
+				
+				background-color: #f2f2f2;
+				margin: 0; 
+			}
+			
+		.svg-container {
+				display: flex; 
+			}
+
+		.svg-container > svg {
+				width: 150px; 
+				height: 150px;
+				margin-right: 10px; 
+				
+			}
+			
+		table {
+				border-collapse: collapse;
+				width: 100px; 
+				margin: 10px;
+				
+			}
+
+		th {
+			background-color: #222;
+			color: white;
+			padding: 10px;
+			text-align: center;
+		}
+
+		td {
+			background-color: white;
+			padding: 0px;
+			text-align: center;
+		}
+
+		
+		.separator-sv {
+			border-top: 3px solid lightgray; 
+		}
+		
+		
+		.separator {
+			border-right: 2px solid black;
+			height: 100%; 
+		}
+
+		.stretched-image {
+			width: 100%; 
+		}
+
+		.text-container {
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-start; 
+		}
+
+		.text {
+			flex: 1;
+			margin-top: 10px;
+			margin-right: 10px;
+			/*text-align: left;*/
+			
+		}
+
+		.line1 {
+			font-weight: bold;
+		}
+
+		.line2 {
+			font-size: 20px; 
+		}
+		
+		.form-container {
+			display: flex;
+			align-items: center;
+		}
+
+		
+		Button{
+			background-color: #ff6600; 
+			color: #fff;
+			border: none;
+			border-radius: 3px;
+			padding: 10px 20px;
+			margin-left: 10px;
+			cursor: pointer;
+			font-weight: bold;
+			transition: background-color 0.3s; 
+		
+			}
+		
+		button:hover {
+			background-color: #ff4500; 
+			}	
+	
+	
+		.form-container,.text-container,.svg-container{
+			background-color: #fff;
+			/*border-radius: 5px;*/
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+		}
+	
+		.azerty9 {
+            text-align: left;
+            margin-top: 20px;
+			margin-left: 10px;
+        }
+
+		.azerty9 a {
+			font-size: 12px;
+			text-decoration: none;
+			color: #ff6600;
+			font-weight: bold;
+			
+		}
+		
+		.logout-link {
+			color: #fff;
+			text-decoration: none;
+			margin-left: 10px;
+			transition: color 0.3s; 
+				}
+
+		
+		.logout-link:hover {
+			color: orange;
+		}
+    </style>
+	
+	
+</head>
+<body>
+	<div class="header">
+       <img class="header_image" src="{{ url_for('static', filename='images/orange.png') }}" alt="">
+	   <div class="header_text">Fly2Box </div>
+	   <a class="logout-link" href="/">Logout</a>
+    </div>
+    <table>
+	
+        <tr>
+            <th>IP address</th>
+            
+        </tr>
+		
+		<tr>
+			<td>
+				<div class="form-container">
+					<button onclick="change_ipaddress();">Get ipaddress</button>
+					<p style="margin-left: 10px;">IP: </p><p id="ipaddress" style="margin-left: 10px;">{{ipaddress}}</p>
+				</div>
+			</td>
+		</tr>
+	
+		<tr class="separator-sv">
+            <td></td> 
+        </tr>
+		
+		<th>Information</th>
+        
+		<tr>
+            <td>
+				<div class="svg-container">
+					<div class="svg-wrapper">
+						<svg width="150" height="150" xmlns="http://www.w3.org/2000/svg">
+							<!-- Background Circle -->
+							<circle cx="75" cy="75" r="70" fill="orange" />
+
+							<!-- Colored Arc (Gauge) -->
+							<path
+								d="M 75 75 L 75 20 A 70 70 0 0 1 82.12 21.42 Z"
+								fill="lightgray"
+								stroke="none"
+							/>
+
+							<!-- Center Circle (Optional) -->
+							<circle cx="75" cy="75" r="60" fill="white" />
+
+							<!-- Text Label (Optional) -->
+							<text id="total_this_month" x="75" y="80" text-anchor="middle" font-size="18" fill="black">{{total_this_month}}</text>
+						</svg>
+						<p style="font-size: 20; font-weight: bold;margin-top: 2px">This month</p>
+					</div>
+
+					<div class="svg-wrapper">
+						<svg width="150" height="150" xmlns="http://www.w3.org/2000/svg">
+							<!-- Background Circle -->
+							<circle cx="75" cy="75" r="70" fill="orange" />
+
+							<!-- Colored Arc (Gauge) -->
+							<path
+								d="M 75 75 L 75 20 A 70 70 0 0 1 82.12 21.42 Z"
+								fill="lightgray"
+								stroke="none"
+							/>
+
+							<!-- Center Circle (Optional) -->
+							<circle cx="75" cy="75" r="60" fill="white" />
+
+							<!-- Text Label (Optional) -->
+							<text id="total" x="75" y="80" text-anchor="middle" font-size="18" fill="black">{{total}}</text>
+						</svg>
+						<p style="font-size: 20; font-weight: bold;margin-top: 2px">Total</p>
+					</div>
+				</div>
+            </td>
+        </tr>
+        
+		<tr class="separator-sv">
+            <td></td> 
+        </tr>
+        
+        <tr>
+            <td>
+                <div class="text-container">
+                    <div class="text">
+                        <span class="line1">Network</span>
+                        <br><span id="network" class="line2">{{network}}</span></br>
+                    </div>
+                    <div class="separator"></div>
+                    <div style="flex: 1; text-align: right;">
+                        <img class="stretched-image" src="{{ url_for('static', filename='images/router.png') }}" alt="Stretched Image">
+					</div>
+                </div>
+            </td>
+		</tr>
+		
+		<tr class="separator-sv">
+            <td></td> 
+        </tr>
+		
+		<tr>
+			<td>
+                <div class="text-container">
+                    <div class="text">
+                        <span class="line1">Connected</span>
+                        <br><span id="user_count" class="line2">{{current_wifi_user}}</span></br>
+                    </div>
+                    <div class="separator"></div>
+                    <div style="flex: 1; text-align: right;">
+                        <img class="stretched-image" src="{{ url_for('static', filename='images/connected.png') }}" alt="Stretched Image">
+                    </div>
+                </div>
+            </td>
+			
+        </tr>
+		
+    </table>
+	
+     <div class="azerty9">
+        <a href="https://t.me/N3wB0rn9">© 2023 Azerty9</a>
+    </div>
+	
+</body>
+</html>
+
