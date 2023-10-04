@@ -21,6 +21,7 @@ Before running the script, ensure you have the following dependencies installed:
 - [Requests](https://pypi.org/project/requests/): For making HTTP requests.
 - [Flask](https://pypi.org/project/Flask/): For building the web application.
 - [argparse](https://pypi.org/project/argparse/): For user friendly command line interfaces.
+
 You can install these dependencies using pip:
 
 ```bash
