@@ -207,9 +207,11 @@ def reboot(client, getawey, username, password):
                 if "<response>OK</response>" in response.text:
                     print(f"{SB}{B}[info]{W} Roboted.")
                     return True
-            
-        
+                else :
+                    print(f"{SB}{B}[info]{W} !---! ", response.text)
+            return False
     except Exception as x :
+        return False
         print("[Error] Reboot: ", x)
 
 
@@ -418,6 +420,7 @@ if __name__ == '__main__':
     input_group = parser.add_mutually_exclusive_group(required=True)
     input_group.add_argument('-web', '--web-server', action='store_true', help='Use web server.')  # , action = ExtendFromPipe
     input_group.add_argument('-cli', '--commandline', action='store_true', help='Use commandline.')
+    input_group.add_argument('-reboot', '--reboot-router', action='store_true', help='Reboot the router.')
               
     other_group = parser.add_argument_group('OTHER')
     other_group.add_argument('-u', '--username', type=str, default=None, help='Specify the username.')
@@ -429,6 +432,7 @@ if __name__ == '__main__':
     
     web_server = args.web_server
     commandline = args.commandline
+    reboot_router = args.reboot_router
     error_code_holder = ""
     csrf_token1 = ""
     username = args.username
@@ -452,8 +456,13 @@ if __name__ == '__main__':
         else:
             print(f'{SB}{Y}[warning]',f"{SB}{W}Please make sure (username/password) are provided.")
             print(f'{SB}{B}[info]',f"{SB}{W}ex: app.py -cli -u admin -p 123 (optional: -g 191.168.1.1)")
-    
-   
+    elif reboot_router:
+        if username and password:
+            if not reboot(client, getawey, username, password):
+                logout(client, getawey)
+        else:
+            print(f'{SB}{Y}[warning]',f"{SB}{W}Please make sure (username/password) are provided.")
+            print(f'{SB}{B}[info]',f"{SB}{W}ex: app.py -reboot -u admin -p 123 (optional: -g 191.168.1.1)")
     
     
     
