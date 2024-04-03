@@ -78,8 +78,8 @@ Follow the on-screen instructions to change the network band and request a new W
 
 ## Screenshots
 !["login"](./screenshot/login.png) 
-!["home"](./screenshot/home.png)
-!["cli"](./screenshot/cli.png)
+!["home"](./screenshot/fly2box1.png)
+!["cli"](./screenshot/fly2box.png)
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
