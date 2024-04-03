@@ -2,6 +2,7 @@ import base64
 import hashlib
 from time import sleep
 import re
+import logging 
 import xml.etree.ElementTree as ET
 #install
 from flask import Flask, request, render_template, jsonify ,redirect , url_for
@@ -38,7 +39,7 @@ print(f"{SB}{W}|{G}██║     ███████╗██║   {Y}██�
 print(f"{SB}{W}|{G}╚═╝     ╚══════╝╚═╝   {Y}╚══════╝{G}╚═════╝  ╚═════╝ ╚═╝  ╚═╝{W}|")
 print(f'{SB}{W}+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-+')
 print(f"{SB}{W}|                                                       |")
-print(f"{SB}{W}|                 {W}.: Version: {G}1.0.0 {W}:.",f"{SB}{W}                 |")                                    
+print(f"{SB}{W}|                 {W}.: Version: {G}1.0.2 {W}:.",f"{SB}{W}                 |")                                    
 print(f"{SB}{W}|               {W}.: Author : {BG}{W}!AZERTY9!", f"{SB}{W}:.", f"{SB}{W}               |")                                    
 print(f'{SB}{W}+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-+')  
 
@@ -80,7 +81,7 @@ def login_state(client, getawey):
     url = "http://%s/api/user/state-login" % getawey
     response = client.get(url)
     #<Username>admin</Username>
-    if "<State>0</State><" in response.text:
+    if "<State>0</State>" in response.text:
         #print(f"{SB}{B}[info]{W}Already logged in.")
         return True
     return False
@@ -348,56 +349,76 @@ def status_info(username, password):
     }
     
     return data
+
+
+def fly2box_result(username, password):
+    print(f'{SB}{BR}Get Router Statistics.')
+    statistics = status_info(username, password)
+    total_this_month = statistics['total_this_month']
+    total = statistics['total']
+    current_wifi_user = statistics['current_wifi_user']
+    WanIPAddress = statistics['ipaddress']
+    current_net_mode = statistics['network'] 
     
+    return render_template('fly2box.html', total_this_month=total_this_month,
+                            total=total, current_wifi_user=current_wifi_user,
+                            ipaddress=WanIPAddress, network=current_net_mode
+                            
+                            )
+                                    
+            
 
 @app.route('/')
 def index():
     if login_state (client, getawey):
-        logout(client, getawey)        
-    return render_template('index.html')
+        return fly2box_result(username, password)  
+    else:    
+        return render_template('login.html')
 
 
-@app.route('/fly2box', methods=['POST'])
-def fly2box():
+@app.route('/logout')
+def web_logout():
+    if login_state (client, getawey):
+        logout(client, getawey)  
+    return redirect('/')
+    
+
+@app.route('/login', methods=['POST'])
+def web_login():
+
     global username
     global password
+    username = request.form['username']
+    password = request.form['password']
     if request.method == 'POST':
-        user_login = login(client, getawey, request.form['username'], request.form['password'])
-        if user_login :
-            print(f'{SB}{BR}Get Router Statistics.')
-            username = request.form['username']
-            password = request.form['password']
-            
-            statistics = status_info(username, password)
-            total_this_month = statistics['total_this_month']
-            total = statistics['total']
-            current_wifi_user = statistics['current_wifi_user']
-            WanIPAddress = statistics['ipaddress']
-            current_net_mode = statistics['network'] 
-            
-            return render_template('result.html', total_this_month=total_this_month,
-                                    total=total, current_wifi_user=current_wifi_user,
-                                    ipaddress=WanIPAddress, network=current_net_mode
-                                    
-                                    )
-                                    
-                                    
-        else:
-            #print(f'{SB}{R}[Error]{W}', error_code_holder)
-            return render_template('index.html' ,login_error=error_code_holder)
+        try:
+            user_login = login(client, getawey, request.form['username'], request.form['password'])
+            if user_login :
+                return fly2box_result(username, password)                       
+            else:
+                #print(f'{SB}{R}[Error]{W}', error_code_holder)
+                #return render_template('login.html')# ,login_error=error_code_holder
+                error_code = error_code_holder.lower().replace('_',' ')
+                return error_code ,400
+        except Exception as e :
+            print(f'{SB}{R}[ERROR]{W}fly2box: {R}{e}')
+
 
 
 @app.route('/update_state')
 def update_state():
-    if username and password:
-        print(f'{SB}{BR}Get Router Statistics.')
-        statistics = status_info(username, password)
-        return jsonify(statistics)
+    if username and password :
+        if login_state (client, getawey):
+            print(f'{SB}{BR}Get Router Statistics.')
+            statistics = status_info(username, password)
+            return jsonify(statistics)
+        else:
+            return "Not logged.",400
     else: 
         return jsonify({"location" : '/', })
 
 
-@app.route('/retrieve')
+@app.route('/Change_ip')
 def retrieve():
     print(f'{SB}{BR}Change NetworkMode.')
     change_net_mode = net_mode(client, getawey, username, password)
@@ -408,7 +429,7 @@ def retrieve():
             "ipaddress" : WanIPAddress,
             "network" : current_net_mode,
         }
-        return jsonify(data)   
+        return jsonify(data)
     return jsonify({"ipaddress" : 'None', "network" : 'None',})
     
 
@@ -442,8 +463,8 @@ if __name__ == '__main__':
     
     
     if web_server:
-        #debug=False
-        app.run(threaded=True)
+        #
+        app.run(debug=True, threaded=True)
     elif commandline:
         if username and password:
             change_net_mode = net_mode(client, getawey, username, password)

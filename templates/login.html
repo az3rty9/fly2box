@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/styles.css') }}"
+    />
+  </head>
+  <body>
+    <div id="content-index">
+      <div class="login-container">
+        <div class="login-box">
+          <div class="circular-image">
+            <img
+              src="{{ url_for('static', filename='images/azerty9.png') }}"
+              alt="Circular Image"
+            />
+          </div>
+          <h2>Login</h2>
+          <form id="login-form" action="/login" method="POST">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" id="username" name="username" required />
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" required />
+            </div>
+            <p class="login-error">{{ login_error }}</p>
+            <button type="submit" class="login-button">Login</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const container = document.querySelector("#content-index");
+      const form = document.querySelector("#login-form");
+      const containerMessage = document.querySelector(".login-error");
+      form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        //containerMessage.innerHTML = ''
+
+        const formData = new FormData(form);
+        const formUrl = "/login";
+        try {
+          const response = await fetch(formUrl, {
+            method: "POST",
+            body: formData,
+          });
+          const responseText = await response.text();
+          if (response.status === 200) {
+            console.log(responseText);
+            //window.location.href = "/"
+            container.innerHTML = responseText;
+          } else {
+            console.log("[ERROR]" + responseText);
+            containerMessage.innerHTML = responseText;
+          }
+        } catch (error) {
+          console.log("[ERROR*]" + error.message);
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/fly2box.css') }}"
+    />
+    <script src="{{ url_for('static', filename='js/fly2box.js') }}"></script>
+  </head>
+  <body>
+    <div class="header">
+      <img
+        class="header_image"
+        src="{{ url_for('static', filename='images/orange.png') }}"
+        alt=""
+      />
+      <div class="header_text">Fly2Box</div>
+      <a class="logout-link" href="/logout">Logout</a>
+    </div>
+    <div class="fly2box-container">
+      <table>
+        <tr>
+          <th>IP address</th>
+        </tr>
+
+        <tr>
+          <td>
+            <div class="form-container">
+              <button onclick="change_ipaddress();">Get ipaddress</button>
+              <p style="margin-left: 10px">IP:</p>
+              <p id="ipaddress" style="margin-left: 10px">{{ipaddress}}</p>
+            </div>
+          </td>
+        </tr>
+
+        <tr class="separator-sv">
+          <td></td>
+        </tr>
+
+        <th>Information</th>
+
+        <tr>
+          <td>
+            <div class="svg-container">
+              <div class="svg-wrapper">
+                <svg
+                  width="150"
+                  height="150"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <!-- Background Circle -->
+                  <circle cx="75" cy="75" r="70" fill="orange" />
+
+                  <!-- Colored Arc (Gauge) -->
+                  <path
+                    d="M 75 75 L 75 20 A 70 70 0 0 1 82.12 21.42 Z"
+                    fill="lightgray"
+                    stroke="none"
+                  />
+
+                  <!-- Center Circle (Optional) -->
+                  <circle cx="75" cy="75" r="60" fill="white" />
+
+                  <!-- Text Label (Optional) -->
+                  <text
+                    id="total_this_month"
+                    x="75"
+                    y="80"
+                    text-anchor="middle"
+                    font-size="18"
+                    fill="black"
+                  >
+                    {{total_this_month}}
+                  </text>
+                </svg>
+                <p style="font-size: 20; font-weight: bold; margin-top: 2px">
+                  This month
+                </p>
+              </div>
+
+              <div class="svg-wrapper">
+                <svg
+                  width="150"
+                  height="150"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <!-- Background Circle -->
+                  <circle cx="75" cy="75" r="70" fill="orange" />
+
+                  <!-- Colored Arc (Gauge) -->
+                  <path
+                    d="M 75 75 L 75 20 A 70 70 0 0 1 82.12 21.42 Z"
+                    fill="lightgray"
+                    stroke="none"
+                  />
+
+                  <!-- Center Circle (Optional) -->
+                  <circle cx="75" cy="75" r="60" fill="white" />
+
+                  <!-- Text Label (Optional) -->
+                  <text
+                    id="total"
+                    x="75"
+                    y="80"
+                    text-anchor="middle"
+                    font-size="18"
+                    fill="black"
+                  >
+                    {{total}}
+                  </text>
+                </svg>
+                <p style="font-size: 20; font-weight: bold; margin-top: 2px">
+                  Total
+                </p>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <tr class="separator-sv">
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>
+            <div class="text-container">
+              <div class="text">
+                <span class="line1">Network</span>
+                <br /><span id="network" class="line2">{{network}}</span>
+              </div>
+              <div class="separator"></div>
+              <div style="flex: 1; text-align: right">
+                <img
+                  class="stretched-image"
+                  src="{{ url_for('static', filename='images/router.png') }}"
+                  alt="Stretched Image"
+                />
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <tr class="separator-sv">
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>
+            <div class="text-container">
+              <div class="text">
+                <span class="line1">Connected</span>
+                <br /><span id="user_count" class="line2"
+                  >{{current_wifi_user}}</span
+                >
+              </div>
+              <div class="separator"></div>
+              <div style="flex: 1; text-align: right">
+                <img
+                  class="stretched-image"
+                  src="{{ url_for('static', filename='images/connected.png') }}"
+                  alt="Stretched Image"
+                />
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr class="separator-sv">
+          <td>
+            <div class="azerty9">
+              <a href="https://t.me/N3wB0rn9">© 2023 Azerty9</a>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>
